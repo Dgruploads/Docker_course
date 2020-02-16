@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+#Start a container for drupal
+  drupal:
+    image: drupal
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/www/html/modules
+      - /var/www/html/profiles
+      - /var/www/html/themes
+      - /var/www/html/sites
+
+#Start a container for postgres database
+  postgres:
+    image: postgres:10
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
