@@ -1,0 +1,21 @@
+FROM centos
+LABEL author="AUTHOR_NAME"
+LABEL description="This is a custom AMI"
+RUN yum update -y && yum install httpd -y && yum install git -y && yum install java -y
+EXPOSE 80
+ENV dir /var/www/html
+COPY ./index.html $dir
+ADD http://mirrors.jenkins.io/war-stable/latest/jenkins.war $dir
+CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
+#ENTRYPOINT
+RUN mkdir /myvol
+RUN echo "This is a persistent voume" > /myvol/greeting
+VOLUME /myvol
+WORKDIR $dir
+ARG file
+RUN touch $file
+RUN mkdir $file.html
+ONBUILD RUN touch index.html
+ONBUILD RUN mkdir index_folder
+ONBUILD RUN yum install mysql -y
+HEALTHCHECK CMD curl -f http://YOUR_MACHINE_IP_ADDRESS:8080/index.html || exit 1
