@@ -1,0 +1,26 @@
+###########################################################################
+#Change the file name to docker-compose.yml when running in your machine###
+###########################################################################
+#Creating a ubuntu container###
+ubuntu:
+    image: ubuntu
+    volumes:
+      - /home/ec2-user/ubuntu:/root
+
+##Creating a centos container###
+centos:
+    image: centos
+    volumes:
+      - /home/ec2-user/centos:/root
+
+##Creating a mysql container###
+mysql:
+    image: mysql
+    volumes:
+      - /home/ec2-user/mysql:/var/lib/mysql
+
+##Creating a jenkins container###
+jenkins:
+    image: jenkins
+    volumes:
+      - /home/ec2-user/jenkins:/var/jenkins_home
