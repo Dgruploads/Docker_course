@@ -1,0 +1,100 @@
+version: '3.3'
+services:
+
+############################################################
+##Container to run the redmine application.               ##
+############################################################
+  redmine_app:
+    image: redmine
+    restart: always
+    ports:
+      - "8080:3000"
+    volumes:
+      - redmine_app_data:/usr/src/redmine
+    environment:
+      REDMINE_DB_MYSQL: redmine_database
+      REDMINE_DB_PASSWORD: redmine
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_DATABASE: redmine
+
+############################################################
+##Container to run mysql for redmine application.         ##
+############################################################
+  redmine_database:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - redmine_db_data:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: redmine
+        MYSQL_DATABASE: redmine
+        MYSQL_USER: redmine
+        MYSQL_PASSWORD: redmine
+
+############################################################
+##Container to run the wordpress application.             ##
+############################################################
+  wordpress_app:
+    image: wordpress:latest
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    volumes:
+      - wordpress_app_data:/var/www/html
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+############################################################
+##Container to run mysql for wordpress application.       ##
+############################################################
+  wordpress_database:
+    image: mysql:5.7
+    volumes:
+      - wordpress_db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+############################################################
+##Container to run the drupal application.                ##
+############################################################
+  drupal_app:
+    image: drupal
+    restart: always
+    ports:
+      - "8181:80"
+    volumes:
+      - drupal_data:/var/www/html
+
+############################################################
+##Container to run mysql for drupal application.          ##
+############################################################
+  drupal_database:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - drupal_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: drupal
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+     
+############################################################      
+##Creating a instance for volumes for all the containers.###
+############################################################
+volumes:
+  redmine_app_data: {}
+  redmine_db_data: {}
+  drupal_db_data: {}
+  wordpress_db_data: {}
+  wordpress_app_data: {}
+  drupal_data: {}
