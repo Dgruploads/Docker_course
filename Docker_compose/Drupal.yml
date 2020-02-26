@@ -1,20 +1,24 @@
-version: '3.1'
+version: '3.3'
 services:
-#Start a container for drupal
   drupal:
     image: drupal
     restart: always
     ports:
-      - "8080:80"
+      - "8181:80"
     volumes:
-      - /var/www/html/modules
-      - /var/www/html/profiles
-      - /var/www/html/themes
-      - /var/www/html/sites
+      - drupal_data:/var/www/html
 
-#Start a container for postgres database
-  postgres:
-    image: postgres:10
+  db:
+    image: mysql:5.7
     restart: always
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
-      POSTGRES_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: drupal
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+
+volumes:
+ db_data: {}
+ drupal_data: {}
