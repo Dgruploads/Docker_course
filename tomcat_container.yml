@@ -1,0 +1,19 @@
+===========================================================================
+HOW TO RUN TOMCAT AS A CONTAINER USING DOCKER AND DEPLOY SAMPLE WAR PACKAGE
+===========================================================================
+
+Step 1 : Install docker
+
+Step 2 : Start the docker service
+
+Step 3 : Write the dockerfile
+
+Step 4 : Build the image using the dockerfile you have created.
+	"docker build -t tomcat-image ."
+
+Step 5 : Run the container using the image you have created.
+	"docker run -p 8080:8080 --name tomcat-container tomcat-image &"
+
+Step 6 : Access the application over the browser.
+	"your-ip-address:8080" ---- This should show the tomcat server
+	"your-ip-address:8080/sample" ---- This should show the sample war package running on tomcat.
