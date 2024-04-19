@@ -2,9 +2,9 @@ FROM ubuntu:latest ## Ubuntu base image.
 RUN apt-get -y update && apt-get -y upgrade ## Updating and upgrading the machine.
 RUN apt-get -y install openjdk-8-jdk wget ## Installing java and wget.
 RUN mkdir /usr/local/tomcat ## Creating a tomcat tomcat in /usr/local location.
-RUN wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz -O /tmp/tomcat.tar.gz ## Download tomcat in the /tmp location.
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.88/bin/apache-tomcat-9.0.88.tar.gz -O /tmp/tomcat.tar.gz ## Download tomcat in the /tmp location.
 RUN cd /tmp && tar xvfz tomcat.tar.gz ## Untar the downloaded file.
-RUN cp -Rv /tmp/apache-tomcat-8.5.54/* /usr/local/tomcat/ ## Copy the untared files to /usr/local/tomcat folder.
+RUN cp -Rv /tmp/apache-tomcat-9.0.88/* /usr/local/tomcat/ ## Copy the untared files to /usr/local/tomcat folder.
 ADD http://tomcat.apache.org/tomcat-7.0-doc/appdev/sample/sample.war /usr/local/tomcat/webapps/ ## Download the sample war package and copy it to tomcat webapps folder.
 EXPOSE 8080 ## Run the container on 8080.
 CMD /usr/local/tomcat/bin/catalina.sh run ## Start the tomcat server.
