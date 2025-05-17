@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres
+
+  web:
+    build: .
+    depends_on:
+      - db
+
+############################
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: example
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+##############################
+#!/bin/sh
+# wait-for.sh
+
+until nc -z db 5432; do
+  echo "Waiting for the DB..."
+  sleep 2
+done
+
+exec "$@"
+
+##############################
+COPY wait-for.sh /wait-for.sh
+RUN chmod +x /wait-for.sh
+
+##############################
+services:
+  app:
+    build: .
+    depends_on:
+      - db
+    entrypoint: ["/wait-for.sh", "python", "app.py"]
+
+##############################
+import time, psycopg2
+
+for i in range(10):
+    try:
+        conn = psycopg2.connect("dbname=app user=postgres host=db password=example")
+        break
+    except:
+        print("DB not ready, retrying...")
+        time.sleep(2)
