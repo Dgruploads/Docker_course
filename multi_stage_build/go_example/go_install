@@ -1,0 +1,14 @@
+# Download Go 1.23
+wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
+
+# Remove existing Go directory
+sudo rm -rf /usr/local/go
+
+# Extract new version
+sudo tar -C /usr/local -xzf go1.23.0.linux-amd64.tar.gz
+
+# Set up environment variables (add to ~/.bashrc or ~/.profile)
+export PATH=$PATH:/usr/local/go/bin
+
+# Verify version
+go version
