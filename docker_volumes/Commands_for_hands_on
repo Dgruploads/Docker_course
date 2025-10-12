@@ -1,16 +1,24 @@
+### Start a container with volume type ###
 docker run --rm --name persistent-db \
   -e POSTGRES_PASSWORD=mysecretpassword \
   --mount type=volume,source=pg_data,target=/var/lib/postgresql/data \
   postgres:15
 
-
+### Connect to container and list the databases ###
 docker exec -it persistent-db psql -U postgres -c "\l"
 
+### Lis the volumes ###
 docker volume ls
 
-docker run --rm --name new-persistent-db \
-  -e POSTGRES_PASSWORD=mysecretpassword \
-  --mount type=volume,source=pg_data,target=/var/lib/postgresql/data \
-  postgres:15
+### Start a container with bind type ###
+docker run -d --name dev-server \
+  -p 3000:3000 \
+  --mount type=bind,source="$(pwd)",target=/app \
+  -w /app \
+  node:18 \
+  sh -c "npm install && npx nodemon app.js"
 
-docker exec -it new-persistent-db psql -U postgres -c "\l"
+### Start a container with tmpfs type ###
+docker run -d --name secure-processor \
+  --mount type=tmpfs,target=/app/temp-secrets \
+  alpine sleep 3600
