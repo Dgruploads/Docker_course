@@ -1,0 +1,16 @@
+docker run --rm --name persistent-db \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  --mount type=volume,source=pg_data,target=/var/lib/postgresql/data \
+  postgres:15
+
+
+docker exec -it persistent-db psql -U postgres -c "\l"
+
+docker volume ls
+
+docker run --rm --name new-persistent-db \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  --mount type=volume,source=pg_data,target=/var/lib/postgresql/data \
+  postgres:15
+
+docker exec -it new-persistent-db psql -U postgres -c "\l"
