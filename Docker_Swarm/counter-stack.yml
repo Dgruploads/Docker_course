@@ -1,13 +1,9 @@
 version: '3.8'
 services:
   web:
-    build: .
+    image: "dgruploads/python_count_app"
     ports:
       - "5000:5000"
-    volumes:
-      - .:/code
-    environment:
-      FLASK_ENV: development
     deploy:
       replicas: 3
       restart_policy:
